@@ -5,6 +5,8 @@ import Locations.Location;
 import Locations.SafeHouse;
 import Locations.ToolStore;
 import Game.Inventory;
+import Weapons.Armor;
+import Weapons.Weapon;
 
 import java.util.Scanner;
 
@@ -67,14 +69,17 @@ public class Player {
         System.out.println("Weapon: " + this.getInventory().getWeapon().getName() +
                 "\tArmor: " + this.getInventory().getArmor().getName() +
                 "\tBlockage: " + this.getInventory().getArmor().getBlock() +
-                "\tDamage: " + this.getDamage() +
+                "\tDamage: " + this.getTotalDamage() +
                 "\tHealth:" + this.getHealth() +
                 "\tMoney: " + this.getMoney());
     }
 
-    public int getDamage() {
-
+    public int getTotalDamage() {
         return damage + this.getInventory().getWeapon().getDamage();
+    }
+
+    public int getDamage() {
+        return damage;
     }
 
     public void setDamage(int damage) {
@@ -119,5 +124,13 @@ public class Player {
 
     public void setInventory(Inventory inventory) {
         this.inventory = inventory;
+    }
+
+    public Weapon getWeapon() {
+        return this.getInventory().getWeapon();
+    }
+
+    public Armor getArmor() {
+        return this.getInventory().getArmor();
     }
 }

@@ -1,8 +1,6 @@
 package Game;
 
-import Locations.Location;
-import Locations.SafeHouse;
-import Locations.ToolStore;
+import Locations.*;
 
 import java.util.Scanner;
 
@@ -26,6 +24,9 @@ public class Game {
             System.out.println("\nLocations:");
             System.out.println("1 - Safe House\t\tNo enemies here, just safe.");
             System.out.println("2 - Shop\t\tYou can buy weapons and armors.");
+            System.out.println("3 - Cave\t\tReward <Food> - Be ware of Zombies!");
+            System.out.println("4 - Forest\t\tReward <Firewood> - Be ware of Vampires!");
+            System.out.println("5 - Cave\t\tReward <Water> - Be ware of Bears!");
             System.out.println("0 - Exit \t\tQuit the game.");
             System.out.print("Please select the destination: ");
 
@@ -41,9 +42,18 @@ public class Game {
                 case 2:
                     location = new ToolStore(player);
                     break;
-                default:
-                    location = new SafeHouse(player);
+                case 3:
+                    location = new Cave(player);
                     break;
+                case 4:
+                    location = new Forest(player);
+                    break;
+                case 5:
+                    location = new River(player);
+                    break;
+                default:
+                    System.out.println("Please select a valid destination!");
+                    continue;
             }
 
             if (location == null) {
