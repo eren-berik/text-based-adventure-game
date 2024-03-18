@@ -47,30 +47,57 @@ public class BattleLocation extends Location {
     }
 
     public boolean combat(int obstacleNumber) {
+        Random random = new Random();
+
         for (int i = 1; i <= obstacleNumber; i++) {
             this.getObstacle().setHealth(this.getObstacle().getDefaultHealth());
             playerStats();
             obstacleStats(i);
 
-            while (this.getPlayer().getHealth() > 0 && this.getObstacle().getHealth() > 0) {
-                System.out.println("<H>it or <R>un");
-                String selectCombat = sc.nextLine().toUpperCase();
+            boolean playerFirst = random.nextBoolean();
 
-                if (selectCombat.equals("H")) {
-                    System.out.println("You hit!");
-                    this.getObstacle().setHealth(this.getObstacle().getHealth() - this.getPlayer().getTotalDamage());
-                    afterHit();
-                    if (this.getObstacle().getHealth() > 0 ) {
-                        System.out.println(this.getObstacle().getName() + " hit you!");
-                        int obstacleDamage = this.getObstacle().getDamage() - this.getPlayer().getInventory().getArmor().getBlock();
-                        if (obstacleDamage < 0) {
-                            obstacleDamage = 0;
-                        }
-                        this.getPlayer().setHealth(this.getPlayer().getHealth() - obstacleDamage);
+            while (this.getPlayer().getHealth() > 0 && this.getObstacle().getHealth() > 0) {
+                if (playerFirst) {
+                    System.out.println("<H>it or <R>un");
+                    String selectCombat = sc.nextLine().toUpperCase();
+
+                    if (selectCombat.equals("H")) {
+                        System.out.println("You hit!");
+                        this.getObstacle().setHealth(this.getObstacle().getHealth() - this.getPlayer().getTotalDamage());
                         afterHit();
+                        if (this.getObstacle().getHealth() > 0) {
+                            System.out.println(this.getObstacle().getName() + " hit you!");
+                            int obstacleDamage = this.getObstacle().getDamage() - this.getPlayer().getInventory().getArmor().getBlock();
+                            if (obstacleDamage < 0) {
+                                obstacleDamage = 0;
+                            }
+                            this.getPlayer().setHealth(this.getPlayer().getHealth() - obstacleDamage);
+                            afterHit();
+                        }
+                    } else {
+                        return false;
                     }
                 } else {
-                    return false;
+                    System.out.println(this.getObstacle().getName() + " hit you!");
+                    int obstacleDamage = this.getObstacle().getDamage() - this.getPlayer().getInventory().getArmor().getBlock();
+                    if (obstacleDamage < 0) {
+                        obstacleDamage = 0;
+                    }
+                    this.getPlayer().setHealth(this.getPlayer().getHealth() - obstacleDamage);
+                    afterHit();
+
+                    if (this.getPlayer().getHealth() > 0) {
+                        System.out.println("<H>it or <R>un");
+                        String selectCombat = sc.nextLine().toUpperCase();
+
+                        if (selectCombat.equals("H")) {
+                            System.out.println("You hit!");
+                            this.getObstacle().setHealth(this.getObstacle().getHealth() - this.getPlayer().getTotalDamage());
+                            afterHit();
+                        } else {
+                            return false;
+                        }
+                    }
                 }
             }
 
@@ -90,6 +117,7 @@ public class BattleLocation extends Location {
 
         return false;
     }
+
 
     private boolean allEnemiesDefeated(int obstacleNumber) {
         for (int i = 1; i <= obstacleNumber; i++) {
