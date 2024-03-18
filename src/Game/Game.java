@@ -18,24 +18,26 @@ public class Game {
         System.out.println("Please select a character to start...");
         player.selectChar();
 
-        Location location = null;
         while (true) {
-            player.printInfo();
-            System.out.println("\nLocations:");
+            System.out.println("\n---------- Menu ----------");
             System.out.println("1 - Safe House\t\tNo enemies here, just safe.");
             System.out.println("2 - Shop\t\tYou can buy weapons and armors.");
             System.out.println("3 - Cave\t\tReward <Food> - Be ware of Zombies!");
             System.out.println("4 - Forest\t\tReward <Firewood> - Be ware of Vampires!");
-            System.out.println("5 - Cave\t\tReward <Water> - Be ware of Bears!");
+            System.out.println("5 - River\t\tReward <Water> - Be ware of Bears!");
             System.out.println("0 - Exit \t\tQuit the game.");
+            System.out.println("---------- **** ----------");
+            player.printInfo();
+            System.out.println("---------- **** ----------");
             System.out.print("Please select the destination: ");
 
             int selectLocation = sc.nextInt();
 
+            Location location = null;
             switch (selectLocation) {
                 case 0:
-                    location = null;
-                    break;
+                    System.out.println("Game terminated...");
+                    return;
                 case 1:
                     location = new SafeHouse(player);
                     break;
@@ -56,17 +58,19 @@ public class Game {
                     continue;
             }
 
-            if (location == null) {
-                System.out.println("Game terminated...");
-                break;
+            if (location != null) {
+                if (!location.onLocation()) {
+                    if (player.hasWonGame() && location instanceof SafeHouse) {
+                        return;
+                    } else if (player.getHealth() <= 0) {
+                        System.out.println("You are dead... Game Over!");
+                        return;
+                    } else if (player.hasWonGame()) {
+                        System.out.println("Carry those items to Safe House to finish the game!");
+                    }
+                }
             }
 
-            if (!location.onLocation()) {
-                System.out.println("You are dead... Game Over!");
-                break;
-            }
         }
-
-
     }
 }

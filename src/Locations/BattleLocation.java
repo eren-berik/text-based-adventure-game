@@ -19,6 +19,11 @@ public class BattleLocation extends Location {
 
     @Override
     public boolean onLocation() {
+        if (this.getPlayer().hasWonAward(this.getAward())) {
+            System.out.println("You have already won the award for this location!");
+            return false;
+        }
+
         int obstacleNumber = randomObstacleNumber();
 
         System.out.println("You are here: " + this.getName());
@@ -28,7 +33,6 @@ public class BattleLocation extends Location {
         String selectAction = sc.nextLine().toUpperCase();
 
         if (selectAction.equals("F")) {
-            // Fight
             if (combat(obstacleNumber)) {
                 System.out.println("All enemies are dead in " + this.getName());
                 return true;
@@ -78,7 +82,22 @@ public class BattleLocation extends Location {
             }
         }
 
+        if (allEnemiesDefeated(obstacleNumber)) {
+            this.getPlayer().getInventory().addSpecialItem(this.getAward());
+            System.out.println("You found a special item!");
+            this.getPlayer().getInventory().printSpecialItems();
+        }
+
         return false;
+    }
+
+    private boolean allEnemiesDefeated(int obstacleNumber) {
+        for (int i = 1; i <= obstacleNumber; i++) {
+            if (this.getObstacle().getHealth() > 0) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public void afterHit() {

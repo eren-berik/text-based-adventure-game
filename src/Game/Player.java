@@ -1,10 +1,6 @@
 package Game;
 
 import GameChars.*;
-import Locations.Location;
-import Locations.SafeHouse;
-import Locations.ToolStore;
-import Game.Inventory;
 import Weapons.Armor;
 import Weapons.Weapon;
 
@@ -13,10 +9,11 @@ import java.util.Scanner;
 public class Player {
     private int damage;
     private int health;
+    private int charHealth;
     private int money;
     private String name;
     private String charName;
-    private Scanner sc = new Scanner(System.in);
+    private final Scanner sc = new Scanner(System.in);
     private Inventory inventory;
 
     public Player(String name) {
@@ -61,6 +58,7 @@ public class Player {
     public void initPlayer(GameChar gameChar) {
         this.setDamage(gameChar.getDamage());
         this.setHealth(gameChar.getHealth());
+        this.setCharHealth(gameChar.getHealth());
         this.setMoney(gameChar.getMoney());
         this.setCharName(gameChar.getName());
     }
@@ -71,8 +69,35 @@ public class Player {
                 "\tBlockage: " + this.getInventory().getArmor().getBlock() +
                 "\tDamage: " + this.getTotalDamage() +
                 "\tHealth:" + this.getHealth() +
-                "\tMoney: " + this.getMoney());
+                "\tMoney: " + this.getMoney() +
+                "\nSpecial Items: ");
+        this.getInventory().printSpecialItems();
     }
+
+    public boolean hasWonAward(String award) {
+        String[] specialItems = this.getInventory().getSpecialItems();
+        for (String specialItem : specialItems) {
+            if (specialItem != null && specialItem.equals(award)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean hasWonGame() {
+        String[] specialItems = this.getInventory().getSpecialItems();
+        int count = 0;
+        for (int i = 0; i < specialItems.length; i++) {
+            if (specialItems[i] != null && (specialItems[i].equals("Food") || specialItems[i].equals("Firewood") || specialItems[i].equals("Water"))) {
+                count++;
+                if (count == 3) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
 
     public int getTotalDamage() {
         return damage + this.getInventory().getWeapon().getDamage();
@@ -91,7 +116,18 @@ public class Player {
     }
 
     public void setHealth(int health) {
+        if (health < 0) {
+            health = 0;
+        }
         this.health = health;
+    }
+
+    public int getCharHealth() {
+        return charHealth;
+    }
+
+    public void setCharHealth(int charHealth) {
+        this.charHealth = charHealth;
     }
 
     public int getMoney() {
