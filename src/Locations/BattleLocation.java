@@ -2,6 +2,8 @@ package Locations;
 
 import Game.Player;
 import Monsters.Obstacle;
+import Weapons.Armor;
+import Weapons.Weapon;
 
 import java.util.Random;
 
@@ -103,18 +105,24 @@ public class BattleLocation extends Location {
 
             if (this.getObstacle().getHealth() < this.getPlayer().getHealth()) {
                 System.out.println("You defeated the enemy!");
-                System.out.println("Award: " + this.getObstacle().getAward());
-                this.getPlayer().setMoney(this.getPlayer().getMoney() + this.getObstacle().getAward());
+                System.out.println("Award: " + this.getObstacle().getMoneyAward());
+                this.getPlayer().setMoney(this.getPlayer().getMoney() + this.getObstacle().getMoneyAward());
                 System.out.println("Your money: " + this.getPlayer().getMoney());
             }
         }
 
         if (allEnemiesDefeated(obstacleNumber)) {
-            this.getPlayer().getInventory().addSpecialItem(this.getAward());
-            System.out.println("You found a special item!");
-            this.getPlayer().getInventory().printSpecialItems();
-        }
+            if (this.getAward() != null || this.getAward() != "Random") {
+                this.getPlayer().getInventory().addSpecialItem(this.getAward());
+                System.out.println("You found a special item!");
+            }
 
+            if (this.getObstacle().getItemAward() != null) {
+                this.getPlayer().getInventory().printSpecialItems();
+                equipItemReward(this.getObstacle().getItemAward());
+                this.getPlayer().getInventory().addSpecialItem(this.getObstacle().getItemAward());
+            }
+        }
         return false;
     }
 
@@ -151,7 +159,7 @@ public class BattleLocation extends Location {
         System.out.println("---------------------");
         System.out.println("Health: " + this.getObstacle().getHealth());
         System.out.println("Damage: " + this.getObstacle().getDamage());
-        System.out.println("Award: " + this.getObstacle().getAward());
+        System.out.println("Award: " + this.getObstacle().getMoneyAward() + " and " + this.getObstacle().getItemAward());
         System.out.println();
     }
 
@@ -183,5 +191,48 @@ public class BattleLocation extends Location {
 
     public void setMaxObstacle(int maxObstacle) {
         this.maxObstacle = maxObstacle;
+    }
+
+    public void equipItemReward(String itemReward) {
+        if (itemReward.equals("Heavy")) {
+            this.getPlayer().getInventory().setArmor(Armor.getArmorById(3));
+        }
+        if (itemReward.equals("Medium")) {
+            this.getPlayer().getInventory().setArmor(Armor.getArmorById(2));
+        }
+        if (itemReward.equals("Light")) {
+            this.getPlayer().getInventory().setArmor(Armor.getArmorById(1));
+        }
+
+        if (itemReward.equals("Rifle")) {
+            this.getPlayer().getInventory().setWeapon(Weapon.getWeaponById(3));
+        }
+        if (itemReward.equals("Sword")) {
+            this.getPlayer().getInventory().setWeapon(Weapon.getWeaponById(2));
+        }
+        if (itemReward.equals("Pistol")) {
+            this.getPlayer().getInventory().setWeapon(Weapon.getWeaponById(1));
+        }
+
+        if (itemReward.equals("Pistol")) {
+            this.getPlayer().getInventory().setWeapon(Weapon.getWeaponById(1));
+        }
+
+        if (itemReward.equals("Pistol")) {
+            this.getPlayer().getInventory().setWeapon(Weapon.getWeaponById(1));
+        }
+
+        if (itemReward.equals("1 Money")) {
+            this.getPlayer().setMoney(1 + this.getPlayer().getMoney());
+        }
+
+        if (itemReward.equals("5 Money")) {
+            this.getPlayer().setMoney(5 + this.getPlayer().getMoney());
+        }
+
+        if (itemReward.equals("10 Money")) {
+            this.getPlayer().setMoney(10 + this.getPlayer().getMoney());
+        }
+
     }
 }

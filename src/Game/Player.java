@@ -75,7 +75,7 @@ public class Player {
     }
 
     public boolean hasWonAward(String award) {
-        String[] specialItems = this.getInventory().getSpecialItems();
+        String[] specialItems = this.getInventory().getBattleLocationAwards();
         for (String specialItem : specialItems) {
             if (specialItem != null && specialItem.equals(award)) {
                 return true;
@@ -85,7 +85,7 @@ public class Player {
     }
 
     public boolean hasWonGame() {
-        String[] specialItems = this.getInventory().getSpecialItems();
+        String[] specialItems = this.getInventory().getBattleLocationAwards();
         int count = 0;
         for (int i = 0; i < specialItems.length; i++) {
             if (specialItems[i] != null && (specialItems[i].equals("Food") || specialItems[i].equals("Firewood") || specialItems[i].equals("Water"))) {

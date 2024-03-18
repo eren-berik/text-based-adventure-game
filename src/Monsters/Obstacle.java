@@ -6,15 +6,25 @@ public class Obstacle {
     private int damage;
     private int health;
     private int defaultHealth;
-    private int award;
+    private int moneyAward;
+    private String itemAward;
 
-    public Obstacle(int id, String name, int damage, int health, int award) {
+    public Obstacle(int id, String name, int damage, int health, int moneyAward) {
         this.id = id;
         this.name = name;
         this.damage = damage;
         this.health = health;
         this.defaultHealth = health;
-        this.award = award;
+        this.moneyAward = moneyAward;
+    }
+
+    public Obstacle(int id, String name, int damage, int health, String itemAward) {
+        this.id = id;
+        this.name = name;
+        this.damage = damage;
+        this.health = health;
+        this.defaultHealth = health;
+        this.itemAward = itemAward;
     }
 
     public int getId() {
@@ -60,11 +70,19 @@ public class Obstacle {
         this.defaultHealth = defaultHealth;
     }
 
-    public int getAward() {
-        return award;
+    public int getMoneyAward() {
+        return moneyAward;
     }
 
-    public void setAward(int award) {
-        this.award = award;
+    public void setMoneyAward(int award) {
+        this.moneyAward = award;
+    }
+
+    public String getItemAward() {
+        return itemAward;
+    }
+
+    public void setItemAward(String itemAward) {
+        this.itemAward = itemAward;
     }
 }
